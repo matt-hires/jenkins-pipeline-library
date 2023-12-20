@@ -1,8 +1,0 @@
-VersionConstants.class
-version.class
-podman.class
-mvnCmd.class
-gitCmd.class
-log.class
-fetchFromNexus.class
-requireParam.class
