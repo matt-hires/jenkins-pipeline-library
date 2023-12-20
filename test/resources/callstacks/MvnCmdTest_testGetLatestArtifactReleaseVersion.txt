@@ -1,0 +1,7 @@
+   Script1.run()
+      Script1.pipeline(groovy.lang.Closure)
+         Script1.stage(test, groovy.lang.Closure)
+            Script1.script(groovy.lang.Closure)
+               mvnCmd.getLatestArtifactReleaseVersion({nexusUrl=https://nexus.host.at, groupId=myGroupId, artifactId=myArtifactId})
+                  mvnCmd.sh({script=curl -sX GET "https://nexus.host.at/service/rest/v1/search/assets?sort=version&direction=desc&repository=releases&maven.groupId=myGroupId&maven.artifactId=myArtifactId&maven.classifier=&maven.extension=pom" -H "accept: application/json" --output myArtifactId.json, returnStatus=true})
+                  mvnCmd.readJSON({file=myArtifactId.json})

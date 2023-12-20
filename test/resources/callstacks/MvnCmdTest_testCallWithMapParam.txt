@@ -1,0 +1,9 @@
+   Script1.run()
+      Script1.pipeline(groovy.lang.Closure)
+         Script1.stage(test, groovy.lang.Closure)
+            Script1.script(groovy.lang.Closure)
+               Script1.mvnCmd({cmdLine=clean install})
+                  mvnCmd.withMaven({options=[], traceability=false}, groovy.lang.Closure)
+                     mvnCmd.sh({script=export MAVEN_OPTS="$MAVEN_OPTS "
+                   unset JAVA_TOOL_OPTIONS
+                   mvn clean install, returnStatus=false, returnStdout=false})

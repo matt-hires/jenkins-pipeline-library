@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>at.matthires.jenkins</groupId>
+    <artifactId>pipeline-library</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+    <name>Jenkins: Pipeline-Library</name>
+
+    <properties>
+        <jenkins.version>2.432</jenkins.version>
+        <jenkins-plugins.version>2.2151.ve32c9d209a_3f</jenkins-plugins.version>
+        <jenkins-version-number.version>1.11</jenkins-version-number.version>
+        <jenkins-pipeline-unit.version>1.19</jenkins-pipeline-unit.version>
+
+        <groovy.version>2.4.21</groovy.version>
+        <groovy-cps.version>3806.va_3a_6988277b_2</groovy-cps.version>
+        <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
+
+        <mockito-core.version>5.8.0</mockito-core.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
+        <junit-jupiter.version>5.10.1</junit-jupiter.version>
+
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- due to jenkins groovy version -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>jenkins-ci-releases</id>
+            <url>https://repo.jenkins-ci.org/releases/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jenkinsci.plugins</groupId>
+            <artifactId>pipeline-model-definition</artifactId>
+            <version>${jenkins-plugins.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jenkinsci.plugins</groupId>
+            <artifactId>pipeline-model-extensions</artifactId>
+            <version>${jenkins-plugins.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jenkins-ci.main</groupId>
+            <artifactId>jenkins-core</artifactId>
+            <version>${jenkins.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.connectbot.jbcrypt</groupId>
+                    <artifactId>jbcrypt</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cloudbees</groupId>
+            <artifactId>groovy-cps</artifactId>
+            <version>${groovy-cps.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.jenkins-ci</groupId>
+            <artifactId>version-number</artifactId>
+            <version>${jenkins-version-number.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lesfurets</groupId>
+            <artifactId>jenkins-pipeline-unit</artifactId>
+            <version>${jenkins-pipeline-unit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>${gmavenplus-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>addSources</goal>
+                            <goal>addTestSources</goal>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>compileTests</goal>
+                            <goal>removeStubs</goal>
+                            <goal>removeTestStubs</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <fileSet>
+                                    <directory>vars</directory>
+                                    <includes>*.groovy</includes>
+                                </fileSet>
+                                <fileSet>
+                                    <directory>src</directory>
+                                    <includes>**/*.groovy</includes>
+                                </fileSet>
+                            </sources>
+                            <testSources>
+                                <fileSet>
+                                    <directory>test</directory>
+                                    <includes>**/*.groovy</includes>
+                                    <excludes>**/jobs/*.groovy</excludes>
+                                </fileSet>
+                            </testSources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

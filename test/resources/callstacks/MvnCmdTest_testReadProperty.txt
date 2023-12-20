@@ -1,0 +1,15 @@
+   Script1.run()
+      Script1.pipeline(groovy.lang.Closure)
+         Script1.stage(test, groovy.lang.Closure)
+            Script1.script(groovy.lang.Closure)
+               mvnCmd.readProperty(project.artifactId)
+                  mvnCmd.artifactsPublisher({disabled=true})
+                  mvnCmd.junitPublisher({disabled=true})
+                  mvnCmd.findbugsPublisher({disabled=true})
+                  mvnCmd.jacocoPublisher({disabled=true})
+                  mvnCmd.openTasksPublisher({disabled=true})
+                  mvnCmd.jgivenPublisher({disabled=true})
+                  mvnCmd.withMaven({options=[null, null, null, null, null, null], traceability=false}, groovy.lang.Closure)
+                     mvnCmd.sh({script=export MAVEN_OPTS="$MAVEN_OPTS "
+                   unset JAVA_TOOL_OPTIONS
+                   mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec, returnStatus=false, returnStdout=true})
